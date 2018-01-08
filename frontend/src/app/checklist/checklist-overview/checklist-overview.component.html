@@ -1,3 +1,48 @@
-<p>
-  checklist-overview works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <section>
+        <header class="header">
+          <div class="row">
+            <div class="col-md-4">
+              <h1>Users</h1>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+          </div>
+
+        </header>
+      </section>
+
+      <section class="main">
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Creation date stamp (!)</th>
+            <th>Title</th>
+            <th>Target date stamp (!)</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let checklist of checklists">
+            <th scope="row">{{checklist.creationDatestamp}}</th>
+            <td>{{checklist.creationDatestamp}}</td>
+            <td>{{checklist.title}}</td>
+            <td>{{checklist.targetDatestamp}}</td>
+            <td>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+</div>

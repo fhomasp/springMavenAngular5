@@ -4,9 +4,9 @@ import { ChecklistOverviewComponent} from './checklist-overview/checklist-overvi
 import { ChecklistCreateComponent} from './checklist-create/checklist-create.component';
 
 const routes: Routes = [
-  {path: 'checkList', component: ChecklistOverviewComponent},
-  {path: 'checkList/create', component: ChecklistCreateComponent},
-  {path: 'checkList/edit/:creationDatestamp', component: ChecklistCreateComponent}
+  {path: 'checklist', component: ChecklistOverviewComponent},
+  {path: 'checklist/create', component: ChecklistCreateComponent},
+  {path: 'checklist/edit/:creationdatestamp', component: ChecklistCreateComponent}
 ];
 
 @NgModule({
