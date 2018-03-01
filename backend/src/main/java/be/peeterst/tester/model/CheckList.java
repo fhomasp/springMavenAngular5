@@ -20,6 +20,9 @@ public class CheckList {
 
     private CalendarItem calendarItem;
 
+    /**
+     * TODO: When this model object is created through json mapping from Spring, there's no constructor call when this object arrives through a REST call!
+     */
     public CheckList() {
         if(this.creationDatestamp == null || this.creationDatestamp == 0L){
             this.creationDatestamp = System.currentTimeMillis();
@@ -44,6 +47,10 @@ public class CheckList {
 
     public void setTargetDatestamp(long targetDatestamp) {
         this.targetDatestamp = targetDatestamp;
+    }
+
+    public void setCreationDatestamp(Long creationDatestamp) {
+        this.creationDatestamp = creationDatestamp;
     }
 
     public List<ChecklistItem> getItems() {

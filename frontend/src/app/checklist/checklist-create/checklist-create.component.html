@@ -11,15 +11,15 @@
                      formControlName="title">
             </div>
 
-            <form class="form-inline">
+            <form class="form-inline" [formGroup]="checklistForm">
               <div class="form-group">
                 <label>Target Date</label>
                 <div class="input-group">
                   <input class="form-control" placeholder="dd/mm/yyyy" name="dp"
-                         [(ngModel)]="dateModel" ngbDatepicker #d="ngbDatepicker">
+                         [(ngModel)]="dateModel" ngbDatepicker #d="ngbDatepicker" formControlName='targetDateManual'>
                   <div class="input-group-btn">
                     <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                      <img src="/assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+                      <img src="/assets/img/calendar-icon.svg" style="width: 1.5rem; height: 1.2rem; cursor: pointer;"/>
                     </button>
                   </div>
                 </div>

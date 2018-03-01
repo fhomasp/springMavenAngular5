@@ -21,10 +21,10 @@ export class ChecklistService {
       .catch((error: any) => Observable.throw(error.json().error || 'FindAll error' ));
   }
 
-  getCheckList(checklist: string): Observable<Checklist> {
-    return this.http.get(this.apiUrl.concat('/'.concat(checklist)))
+  getCheckList(title: string): Observable<Checklist> {
+    return this.http.get(this.apiUrl.concat('/find/'.concat(title)))
       .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Get Checklist error'));
+      .catch((error: any) => Observable.throw(error.json().error || 'Find Checklist error'));
   }
 
   saveChecklist(checklist: Checklist): Observable<Checklist> {
@@ -33,6 +33,22 @@ export class ChecklistService {
 
   }
 
+  findByCreationDateStamp(creationDatestamp: number): Observable<Checklist> {
+    return this.http.get(this.apiUrl.concat('/') + creationDatestamp)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'FindByCDS Checklist error'));
+  }
 
+  updateCheckList(checklist: Checklist): Observable<Checklist> {
+    return this.http.put(this.apiUrl, checklist)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'update checklist error'));
+  }
+
+  deleteCheckList(creationDatestamp: number): Observable<number> {
+      return this.http.delete(this.apiUrl + '/' + creationDatestamp)
+        .map((res: Response) => res.json())
+        .catch((error: any) => Observable.throw(error.json().error || 'delete checklist error'));
+  }
 
 }

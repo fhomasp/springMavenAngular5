@@ -54,6 +54,15 @@ export class ChecklistOverviewComponent implements OnInit {
 
   deleteChecklist(checklist: Checklist) {
     console.log('Delete checklist '.concat(checklist.title));
+
+    if (checklist) {
+      this.checklistService.deleteCheckList(checklist.creationDatestamp).subscribe(
+        res => {
+          this.getAllChecklists();
+          this.router.navigate(['/checklist']);
+        }
+      );
+    }
   }
 
   convertTime(timestamp: number): Date {

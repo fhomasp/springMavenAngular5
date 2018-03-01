@@ -11,12 +11,9 @@ import {isNumber, padNumber, toInteger} from '@ng-bootstrap/ng-bootstrap/util/ut
 export class NgbDateCustomParserFormatter extends NgbDateParserFormatter {
   parse(value: string): NgbDateStruct {
     if (value) {
-      const dateParts = value.trim().split('-');
-      if (dateParts.length === 1 && isNumber(dateParts[0])) {
-        return {day: toInteger(dateParts[0]), month: null, year: null};
-      } else if (dateParts.length === 2 && isNumber(dateParts[0]) && isNumber(dateParts[1])) {
-        return {day: toInteger(dateParts[0]), month: toInteger(dateParts[1]), year: null};
-      } else if (dateParts.length === 3 && isNumber(dateParts[0]) && isNumber(dateParts[1]) && isNumber(dateParts[2])) {
+      const dateParts = value.trim().split('/');
+      if (dateParts.length === 3 && isNumber(dateParts[0]) && isNumber(dateParts[1]) && isNumber(dateParts[2])
+        && toInteger(dateParts[2]) >= 2010) {
         return {day: toInteger(dateParts[0]), month: toInteger(dateParts[1]), year: toInteger(dateParts[2])};
       }
     }
@@ -45,39 +42,74 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
   checklistForm: FormGroup;
   dateModel: NgbDateStruct;
 
+  private sub: any;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private checklistService: ChecklistService) { }
 
   ngOnInit() {
 
+    this.sub = this.route.params.subscribe(params => {
+       this.creationDatestamp = params['creationdatestamp'];
+    });
+
     this.checklistForm = new FormGroup({
-      title: new FormControl('', Validators.required)
+      title: new FormControl('', Validators.required),
+      targetDateManual: new FormControl('', [
+        Validators.required
+
+      ])
     });
   // Validators.pattern('(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}')
+
+    if (this.creationDatestamp) {
+      this.checklistService.findByCreationDateStamp(this.creationDatestamp).subscribe(
+        checklist => {
+
+          const targetDate: Date = new Date(checklist.targetDatestamp);
+          const targetDateStruct: NgbDateStruct = {day: targetDate.getDate(), month: targetDate.getMonth() + 1,
+            year: targetDate.getFullYear()};
+          this.creationDatestamp = checklist.creationDatestamp;
+          this.checklistForm.patchValue({
+            title: checklist.title,
+            targetDateManual: targetDateStruct
+          });
+        }, error => {
+          console.log(error);
+        }
+      );
+    }
+
   }
 
 
   ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   onSubmit() {
     if (this.checklistForm.valid) {
 
-
-      this.creationDatestamp = Date.now();
-
-      const checklist: Checklist = new Checklist(
-        this.creationDatestamp,
-        this.checklistForm.controls['title'].value,
-        new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day).getTime()
+      if (this.creationDatestamp) {
+         const checklist: Checklist = new Checklist(this.creationDatestamp,
+           this.checklistForm.controls['title'].value,
+           new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day).getTime()
+         );
+         this.checklistService.updateCheckList(checklist).subscribe();
+      }else {
+        // this.creationDatestamp = Date.now();
+        const checklist: Checklist = new Checklist(
+          null,
+          this.checklistForm.controls['title'].value,
+          new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day).getTime()
         );
+        this.checklistService.saveChecklist(checklist).subscribe();
+      }
 
-      this.checklistService.saveChecklist(checklist).subscribe();
+      this.checklistForm.reset();
+      this.router.navigate(['/checklist']);
     }
-
-    this.checklistForm.reset();
-    this.router.navigate(['/checklist']);
   }
 
   redirectChecklistPage() {

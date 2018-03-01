@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
  * User: Thomas
  * Date: 29/12/2017
  * Time: 16:04
+ * TODO: Integration tests
  */
 
 @RestController
@@ -32,16 +34,26 @@ public class CheckListOverviewController {
         return checkLists;
     }
 
-    @RequestMapping(value = "/{title}",method = RequestMethod.GET)
-    public CheckList getCheckList(@PathVariable("title") String title){
-        //todo: Should be List: not unique (use ID for that)
-        return this.checkLists.stream().filter(checklist -> checklist.getTitle().equals(title)).findFirst().orElse(null);
+    @RequestMapping(value = "/find/{title}",method = RequestMethod.GET)
+    public List<CheckList> getCheckList(@PathVariable("title") String title){
+        return this.checkLists.stream().filter(checklist -> checklist.getTitle().contains(title)).collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/{creationDatestamp}",method = RequestMethod.GET)
+    public CheckList getCheckList(@PathVariable("creationDatestamp") long creationDateStamp){
+        return this.checkLists.stream().filter(checklist -> checklist.getCreationDatestamp().equals(creationDateStamp)).findFirst().orElse(null);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public CheckList saveCheckList(@RequestBody CheckList checkList){
-         this.checkLists.add(checkList);
-         return checkList;
+        //todo: only for saving, not updating: dao(service) should be responsible for this
+        if(checkList.getCreationDatestamp() != null){
+            throw new IllegalStateException("creation date at checklist save should be null");
+        }
+        checkList.setCreationDatestamp(new Date().getTime());
+
+        this.checkLists.add(checkList);
+        return checkList;
     }
 
     @RequestMapping(method = RequestMethod.PUT)
@@ -56,14 +68,13 @@ public class CheckListOverviewController {
         return null;
     }
 
-    @RequestMapping(value = "/{title}",method = RequestMethod.DELETE)
-    public int deleteCheckList(@PathVariable String title){
-        List<CheckList> found = this.checkLists.stream().filter(checkList -> checkList.getTitle().equals(title)).collect(Collectors.toList());
-        if(found == null || found.size() == 0) return 0;
-        for (CheckList checkList : found) {
-            this.checkLists.remove(checkList);
-        }
-        return found.size();
+    @RequestMapping(value = "/{creationDatestamp}",method = RequestMethod.DELETE)
+    public int deleteCheckList(@PathVariable long creationDatestamp){
+        CheckList found = this.checkLists.stream().filter(checkList -> checkList.getCreationDatestamp() == creationDatestamp)
+                .findFirst().orElse(null);
+        if(found == null) return 0;
+            this.checkLists.remove(found);
+        return 1;
     }
 
     public void setCheckLists(List<CheckList> checkLists) {
@@ -73,19 +84,31 @@ public class CheckListOverviewController {
     private List<CheckList> buildChecklists() {
         List<CheckList> builtChecklists = new ArrayList<>();
         ZoneId zoneId = ZoneId.systemDefault();
+//        Date d = new Date();
+
         builtChecklists.add(CheckListBuilder.aCheckList()
                 .withTitle("Work")
-                .withTargetDateStamp(LocalDate.of(2017,1,5).atStartOfDay(zoneId).toEpochSecond())
+                .withTargetDateStamp(LocalDate.of(2017,1,5).atStartOfDay(zoneId).toInstant().toEpochMilli())
                 .build());
+        waitATinyMoment();
         builtChecklists.add(CheckListBuilder.aCheckList()
                 .withTitle("Play")
-                .withTargetDateStamp(LocalDate.of(2017,2,6).atStartOfDay(zoneId).toEpochSecond())
+                .withTargetDateStamp(LocalDate.of(2017,2,6).atStartOfDay(zoneId).toInstant().toEpochMilli())
                 .build());
+         waitATinyMoment();
         builtChecklists.add(CheckListBuilder.aCheckList()
                 .withTitle("Sleep")
-                .withTargetDateStamp(LocalDate.of(2017,3,31).atStartOfDay(zoneId).toEpochSecond())
+                .withTargetDateStamp(LocalDate.of(2017,3,31).atStartOfDay(zoneId).toInstant().toEpochMilli())
                 .build());
 
         return builtChecklists;
+    }
+
+    private void waitATinyMoment() {
+        try {
+            Thread.sleep(1L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
