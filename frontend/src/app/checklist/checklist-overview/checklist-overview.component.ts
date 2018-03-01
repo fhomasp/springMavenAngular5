@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Checklist } from '../Checklist';
 import { ChecklistService } from '../checklist.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checklist-overview',
@@ -12,13 +13,14 @@ export class ChecklistOverviewComponent implements OnInit {
 
   checklists: Checklist[];
 
-  constructor(private checklistService: ChecklistService) { }
+  constructor(private router: Router,
+              private checklistService: ChecklistService) { }
 
   ngOnInit() {
-    this.getAllUsers();
+    this.getAllChecklists();
   }
 
-  getAllUsers() {
+  getAllChecklists() {
     this.checklistService.findAll().subscribe(
         checklists => {
           this.checklists = checklists;
@@ -27,5 +29,34 @@ export class ChecklistOverviewComponent implements OnInit {
           console.log(err);
       }
     );
+  }
+
+  getCheckList(title: string) {
+    this.checklistService.getCheckList(title).subscribe(
+      checklists => {
+        this.checklists.push(checklists);
+    },
+    err => {
+        console.log(err);
+    }
+    );
+  }
+
+  redirectNewChecklistPage() {
+    this.router.navigate(['/checklist/create']);
+  }
+
+  editChecklistPage(checklist: Checklist) {
+    if (checklist) {
+      this.router.navigate(['/checklist/edit', checklist.creationDatestamp]);
+    }
+  }
+
+  deleteChecklist(checklist: Checklist) {
+    console.log('Delete checklist '.concat(checklist.title));
+  }
+
+  convertTime(timestamp: number): Date {
+    return new Date(timestamp);
   }
 }

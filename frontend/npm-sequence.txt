@@ -1,3 +1,6 @@
 1. Angular NG
 2. App with routing
 3. npm install - save bootstrap font-awesome
+
+4 npm install bootstrap
+5. npm install --save @ng-bootstrap/ng-bootstrap

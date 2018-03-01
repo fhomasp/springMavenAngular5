@@ -1,3 +1,40 @@
-<p>
-  checklist-create works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <section>
+        <form novalidate [formGroup]="checklistForm" (ngSubmit)="onSubmit()">
+          <fieldset>
+            <div class="form-group">
+              <label>Checklist Title</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="title">
+            </div>
+
+            <form class="form-inline">
+              <div class="form-group">
+                <label>Target Date</label>
+                <div class="input-group">
+                  <input class="form-control" placeholder="dd/mm/yyyy" name="dp"
+                         [(ngModel)]="dateModel" ngbDatepicker #d="ngbDatepicker">
+                  <div class="input-group-btn">
+                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                      <img src="/assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+
+          </fieldset>
+
+          <button type="submit" class="btn btn-primary"  [disabled]="!checklistForm.valid" >Submit</button>
+          <button type="button" class="btn btn-warning" (click)="redirectChecklistPage()">Cancel</button>
+          <pre>{{checklistForm.value | json}}</pre>
+          <pre>{{ dateModel | json }}</pre>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>

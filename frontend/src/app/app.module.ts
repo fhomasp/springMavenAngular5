@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ChecklistModule} from './checklist/checklist.module';
 import { HttpModule } from '@angular/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { HttpModule } from '@angular/http';
     BrowserModule,
     AppRoutingModule,
     ChecklistModule,
-    HttpModule
+    HttpModule,
+    NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

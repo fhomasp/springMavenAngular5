@@ -11,7 +11,7 @@
 
             </div>
             <div class="col-md-2">
-
+              <button type="button" class="btn btn-primary" (click)="redirectNewChecklistPage()">New Checklist</button>
             </div>
           </div>
 
@@ -33,10 +33,12 @@
           <tbody>
           <tr *ngFor="let checklist of checklists">
             <th scope="row">{{checklist.creationDatestamp}}</th>
-            <td>{{checklist.creationDatestamp}}</td>
+            <td>{{convertTime(checklist.creationDatestamp) | date : "dd/MM/yyyy:HH:mm:ss"}}</td>
             <td>{{checklist.title}}</td>
-            <td>{{checklist.targetDatestamp}}</td>
+            <td>{{convertTime(checklist.targetDatestamp) | date : "dd/MM/yyyy"}}</td>
             <td>
+              <button type="button" class="btn btn-success" (click)="editChecklistPage(checklist)">Edit</button>
+              <button type="button" class="btn btn-danger" (click)="deleteChecklist(checklist)">Delete</button>
             </td>
           </tr>
 

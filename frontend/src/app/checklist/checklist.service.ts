@@ -18,7 +18,21 @@ export class ChecklistService {
   findAll(): Observable<Checklist[]> {
     return this.http.get(this.apiUrl)
       .map((res: Response) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error' ));
+      .catch((error: any) => Observable.throw(error.json().error || 'FindAll error' ));
   }
+
+  getCheckList(checklist: string): Observable<Checklist> {
+    return this.http.get(this.apiUrl.concat('/'.concat(checklist)))
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Get Checklist error'));
+  }
+
+  saveChecklist(checklist: Checklist): Observable<Checklist> {
+    return this.http.post(this.apiUrl, checklist)
+      .catch((error: any) => Observable.throw(error.json().error || 'Save Checklist error'));
+
+  }
+
+
 
 }
