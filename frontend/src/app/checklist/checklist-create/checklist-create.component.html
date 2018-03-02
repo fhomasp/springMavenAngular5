@@ -28,7 +28,7 @@
 
 
           </fieldset>
-
+          <br/>
           <button type="submit" class="btn btn-primary"  [disabled]="!checklistForm.valid" >Submit</button>
           <button type="button" class="btn btn-warning" (click)="redirectChecklistPage()">Cancel</button>
           <pre>{{checklistForm.value | json}}</pre>
