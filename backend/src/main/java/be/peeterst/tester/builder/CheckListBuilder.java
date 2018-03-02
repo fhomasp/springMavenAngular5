@@ -1,5 +1,6 @@
 package be.peeterst.tester.builder;
 
+import be.peeterst.tester.model.CalendarItem;
 import be.peeterst.tester.model.CheckList;
 
 /**
@@ -29,8 +30,8 @@ public class CheckListBuilder {
         return this;
     }
 
-    public CheckListBuilder withTargetDateStamp(long timestamp) {
-        this.checkList.setTargetDatestamp(timestamp);
+    public CheckListBuilder withCalendarItem(CalendarItem calendarItem) {
+        this.checkList.setCalendarItem(calendarItem);
         return this;
     }
 }

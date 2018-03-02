@@ -35,7 +35,7 @@
             <th scope="row">{{checklist.creationDatestamp}}</th>
             <td>{{convertTime(checklist.creationDatestamp) | date : "dd/MM/yyyy:HH:mm:ss"}}</td>
             <td>{{checklist.title}}</td>
-            <td>{{convertTime(checklist.targetDatestamp) | date : "dd/MM/yyyy"}}</td>
+            <td>{{checklist.calendarItem.startDate | date : "dd/MM/yyyy"}}</td>
             <td>
               <button type="button" class="btn btn-success" (click)="editChecklistPage(checklist)">Edit</button>
               <button type="button" class="btn btn-danger" (click)="deleteChecklist(checklist)">Delete</button>

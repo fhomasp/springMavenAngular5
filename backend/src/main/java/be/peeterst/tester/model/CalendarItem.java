@@ -10,21 +10,12 @@ import java.util.Date;
  */
 public class CalendarItem {
 
-    private int id;
     private int calendarId;
     private String title;
     private String description;
     private Date startDate;
     private Date endDate;
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getCalendarId() {
         return calendarId;

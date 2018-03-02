@@ -24,6 +24,9 @@ export class ChecklistOverviewComponent implements OnInit {
     this.checklistService.findAll().subscribe(
         checklists => {
           this.checklists = checklists;
+          // for (const checklist of checklists) {
+          //
+          // }
         },
       err => {
           console.log(err);

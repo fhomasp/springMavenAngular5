@@ -14,8 +14,6 @@ public class CheckList {
 
     private String title;
 
-    private long targetDatestamp;
-
     private List<ChecklistItem> items;
 
     private CalendarItem calendarItem;
@@ -41,14 +39,6 @@ public class CheckList {
         this.title = title;
     }
 
-    public long getTargetDatestamp() {
-        return targetDatestamp;
-    }
-
-    public void setTargetDatestamp(long targetDatestamp) {
-        this.targetDatestamp = targetDatestamp;
-    }
-
     public void setCreationDatestamp(Long creationDatestamp) {
         this.creationDatestamp = creationDatestamp;
     }
@@ -62,6 +52,7 @@ public class CheckList {
     }
 
     public CalendarItem getCalendarItem() {
+        if(this.calendarItem == null) this.calendarItem = new CalendarItem();
         return calendarItem;
     }
 
@@ -74,7 +65,6 @@ public class CheckList {
         return "CheckList {" +
                 "creationDatestamp = " + creationDatestamp +
                 ", title = '" + title + '\'' +
-                ", targetDatestamp = " + targetDatestamp +
                 ", items = " + items +
                 ", calendarItem = " + calendarItem +
                 '}';

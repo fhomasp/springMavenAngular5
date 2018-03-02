@@ -1,13 +1,14 @@
+import {CalendarItem} from './CalendarItem';
+
 export class Checklist {
 
   creationDatestamp: number;
   title: string;
-  targetDatestamp: number;
+  calendarItem: CalendarItem;
 
-
-  constructor(creationDatestamp: number, title: string, targetDatestamp: number) {
+  constructor(creationDatestamp: number, title: string, calendarItem: CalendarItem) {
     this.creationDatestamp = creationDatestamp;
     this.title = title;
-    this.targetDatestamp = targetDatestamp;
+    this.calendarItem = calendarItem;
   }
 }

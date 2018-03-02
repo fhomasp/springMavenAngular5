@@ -1,11 +1,13 @@
 package be.peeterst.tester.controller;
 
+import be.peeterst.tester.builder.CalendarItemBuilder;
 import be.peeterst.tester.builder.CheckListBuilder;
 import be.peeterst.tester.model.CheckList;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +64,7 @@ public class CheckListOverviewController {
                 checkListFromList.getCreationDatestamp().equals(checkList.getCreationDatestamp())).findFirst().orElse(null);
         if(checkListToModify != null){
             checkListToModify.setTitle(checkList.getTitle());
-            checkListToModify.setTargetDatestamp(checkList.getTargetDatestamp());
+            checkListToModify.getCalendarItem().setStartDate(checkList.getCalendarItem().getStartDate());
             return checkListToModify;
         }
         return null;
@@ -88,17 +90,32 @@ public class CheckListOverviewController {
 
         builtChecklists.add(CheckListBuilder.aCheckList()
                 .withTitle("Work")
-                .withTargetDateStamp(LocalDate.of(2017,1,5).atStartOfDay(zoneId).toInstant().toEpochMilli())
+                .withCalendarItem(CalendarItemBuilder.aCalendarItem()
+                        .withStartDate(Date.from(LocalDate.of(2017,1,5).atStartOfDay(zoneId).toInstant()))
+                        .withEndDate(Date.from(LocalDate.of(2017,1,5).atTime(9,37).toInstant(ZoneOffset.MAX)))
+                        .withTitle("caltitle1")
+                        .withDescription("caldescription1")
+                        .build())
                 .build());
         waitATinyMoment();
         builtChecklists.add(CheckListBuilder.aCheckList()
                 .withTitle("Play")
-                .withTargetDateStamp(LocalDate.of(2017,2,6).atStartOfDay(zoneId).toInstant().toEpochMilli())
+                .withCalendarItem(CalendarItemBuilder.aCalendarItem()
+                        .withStartDate(Date.from(LocalDate.of(2017,2,6).atStartOfDay(zoneId).toInstant()))
+                        .withEndDate(Date.from(LocalDate.of(2017,2,6).atTime(9,37).toInstant(ZoneOffset.MAX)))
+                        .withTitle("caltitle1")
+                        .withDescription("caldescription1")
+                        .build())
                 .build());
          waitATinyMoment();
         builtChecklists.add(CheckListBuilder.aCheckList()
                 .withTitle("Sleep")
-                .withTargetDateStamp(LocalDate.of(2017,3,31).atStartOfDay(zoneId).toInstant().toEpochMilli())
+                .withCalendarItem(CalendarItemBuilder.aCalendarItem()
+                        .withStartDate(Date.from(LocalDate.of(2017,3,31).atStartOfDay(zoneId).toInstant()))
+                        .withEndDate(Date.from(LocalDate.of(2017,4,1).atTime(9,37).toInstant(ZoneOffset.MAX)))
+                        .withTitle("caltitle1")
+                        .withDescription("caldescription1")
+                        .build())
                 .build());
 
         return builtChecklists;

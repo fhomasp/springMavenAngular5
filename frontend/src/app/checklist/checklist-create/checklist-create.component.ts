@@ -40,7 +40,7 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
   checklist: Checklist;
 
   checklistForm: FormGroup;
-  dateModel: NgbDateStruct;
+  dateModelStartDate: NgbDateStruct;
 
   private sub: any;
 
@@ -67,7 +67,7 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
       this.checklistService.findByCreationDateStamp(this.creationDatestamp).subscribe(
         checklist => {
 
-          const targetDate: Date = new Date(checklist.targetDatestamp);
+          const targetDate: Date = new Date(checklist.calendarItem.startDate);
           const targetDateStruct: NgbDateStruct = {day: targetDate.getDate(), month: targetDate.getMonth() + 1,
             year: targetDate.getFullYear()};
           this.creationDatestamp = checklist.creationDatestamp;
@@ -94,7 +94,10 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
       if (this.creationDatestamp) {
          const checklist: Checklist = new Checklist(this.creationDatestamp,
            this.checklistForm.controls['title'].value,
-           new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day).getTime()
+           { calendarId: null, title: null, description: null,
+             startDate: new Date(this.dateModelStartDate.year, this.dateModelStartDate.month - 1, this.dateModelStartDate.day),
+             endDate: null
+           }
          );
          this.checklistService.updateCheckList(checklist).subscribe();
       }else {
@@ -102,7 +105,10 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
         const checklist: Checklist = new Checklist(
           null,
           this.checklistForm.controls['title'].value,
-          new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day).getTime()
+          { calendarId: null, title: null, description: null,
+            startDate: new Date(this.dateModelStartDate.year, this.dateModelStartDate.month - 1, this.dateModelStartDate.day),
+            endDate: null
+          }
         );
         this.checklistService.saveChecklist(checklist).subscribe();
       }
