@@ -7,8 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Checklist Manager Web App';
-  // TODO: msgs?
+
 
   constructor(private route: ActivatedRoute,
               private router: Router) { }

@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { ChecklistModule} from './checklist/checklist.module';
 import { HttpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AppNavbarComponent
   ],
   imports: [
     BrowserModule,
