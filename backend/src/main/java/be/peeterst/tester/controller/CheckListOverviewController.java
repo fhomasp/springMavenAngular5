@@ -86,12 +86,13 @@ public class CheckListOverviewController {
     private List<CheckList> buildChecklists() {
         List<CheckList> builtChecklists = new ArrayList<>();
         ZoneId zoneId = ZoneId.systemDefault();
+        
 //        Date d = new Date();
 
         builtChecklists.add(CheckListBuilder.aCheckList()
                 .withTitle("Work")
                 .withCalendarItem(CalendarItemBuilder.aCalendarItem()
-                        .withStartDate(Date.from(LocalDate.of(2017,1,5).atStartOfDay(zoneId).toInstant()))
+                        .withStartDate(Date.from(LocalDate.of(2017,1,5).atTime(8,17).atZone(zoneId).toInstant()))
                         .withEndDate(Date.from(LocalDate.of(2017,1,5).atTime(9,37).toInstant(ZoneOffset.MAX)))
                         .withTitle("caltitle1")
                         .withDescription("caldescription1")

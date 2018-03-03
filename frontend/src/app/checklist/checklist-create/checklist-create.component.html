@@ -1,22 +1,31 @@
 <div class="container">
-  <div class="row">
-    <div class="col">
-      <section>
-        <form novalidate [formGroup]="checklistForm" (ngSubmit)="onSubmit()">
-          <fieldset>
-            <div class="form-group">
-              <label>Checklist Title</label>
-              <input type="text"
-                     class="form-control"
-                     formControlName="title">
-            </div>
 
+
+  <form novalidate [formGroup]="checklistForm" (ngSubmit)="onSubmit()">
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label>Checklist Title</label>
+          <input type="text"
+                 class="form-control"
+                 formControlName="title">
+        </div>
+      </div>
+    </div>
+
+    <br/>
+
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <label class="">Target Start Date</label>
             <form class="form-inline" [formGroup]="checklistForm">
               <div class="form-group">
-                <label>Target Date</label>
                 <div class="input-group">
                   <input class="form-control" placeholder="dd/mm/yyyy" name="dp"
-                         [(ngModel)]="dateModelStartDate" ngbDatepicker #d="ngbDatepicker" formControlName='targetDateManual'>
+                         [(ngModel)]="dateModelStartDate" ngbDatepicker #d="ngbDatepicker" formControlName='targetStartDateManual'>
                   <div class="input-group-btn">
                     <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
                       <img src="/assets/img/calendar-icon.svg" style="width: 1.5rem; height: 1.2rem; cursor: pointer;"/>
@@ -25,16 +34,61 @@
                 </div>
               </div>
             </form>
+            <ngb-timepicker [(ngModel)]="targetStartTime" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
+          </div>
+        </div>
+
+      </div>
+
+      <!--#2-->
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <label>Target End Date</label>
+            <form class="form-inline" [formGroup]="checklistForm">
+              <div class="form-group">
+
+                <div class="input-group">
+                  <input class="form-control" placeholder="dd/mm/yyyy" name="dp2"
+                         [(ngModel)]="dateModelEndDate" ngbDatepicker #d2="ngbDatepicker" formControlName='targetEndDateManual'>
+                  <div class="input-group-btn">
+                    <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
+                      <img src="/assets/img/calendar-icon.svg" style="width: 1.5rem; height: 1.2rem; cursor: pointer;"/>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <ngb-timepicker [(ngModel)]="targetEndTime" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
+          </div>
 
 
-          </fieldset>
-          <br/>
-          <button type="submit" class="btn btn-primary"  [disabled]="!checklistForm.valid" >Submit</button>
-          <button type="button" class="btn btn-warning" (click)="redirectChecklistPage()">Cancel</button>
-          <pre>{{checklistForm.value | json}}</pre>
-          <pre>{{ dateModelStartDate | json }}</pre>
-        </form>
-      </section>
+        </div>
+
+      </div>
+
     </div>
-  </div>
+
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <button type="submit" class="btn btn-primary"  [disabled]="!checklistForm.valid" >Submit</button>
+    <button type="button" class="btn btn-warning" (click)="redirectChecklistPage()">Cancel</button>
+    <hr/>
+    <br/>
+    <table class="table">
+      <tr>
+        <td class="d-sm-table-cell"><pre>{{checklistForm.value | json}}</pre></td>
+        <td class="d-sm-table-cell"><pre>{{ dateModelStartDate | json }}</pre></td>
+        <td class="d-sm-table-cell"><pre>Selected target time: {{targetStartTime | json}}</pre></td>
+      </tr>
+      <tr>
+        <td class="d-sm-table-cell"><pre>{{ dateModelEndDate | json }}</pre></td>
+        <td class="d-sm-table-cell"><pre>Selected target time: {{targetEndTime | json}}</pre></td>
+      </tr>
+    </table>
+  </form>
+
 </div>

@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ChecklistService } from '../checklist.service';
 import { Checklist } from '../Checklist';
 import { ActivatedRoute, Router } from '@angular/router';
-import {NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateParserFormatter, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {isNumber, padNumber, toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 
 
@@ -41,6 +41,9 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
 
   checklistForm: FormGroup;
   dateModelStartDate: NgbDateStruct;
+  targetStartTime: NgbTimeStruct;
+  dateModelEndDate: NgbDateStruct;
+  targetEndTime: NgbTimeStruct;
 
   private sub: any;
 
@@ -56,7 +59,11 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
 
     this.checklistForm = new FormGroup({
       title: new FormControl('', Validators.required),
-      targetDateManual: new FormControl('', [
+      targetStartDateManual: new FormControl('', [
+        Validators.required
+
+      ]),
+      targetEndDateManual: new FormControl('', [
         Validators.required
 
       ])
@@ -67,18 +74,29 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
       this.checklistService.findByCreationDateStamp(this.creationDatestamp).subscribe(
         checklist => {
 
-          const targetDate: Date = new Date(checklist.calendarItem.startDate);
-          const targetDateStruct: NgbDateStruct = {day: targetDate.getDate(), month: targetDate.getMonth() + 1,
-            year: targetDate.getFullYear()};
+          const targetStartDate: Date = new Date(checklist.calendarItem.startDate);
+          const targetStartDateStruct: NgbDateStruct = {day: targetStartDate.getDate(), month: targetStartDate.getMonth() + 1,
+            year: targetStartDate.getFullYear()};
+          this.targetStartTime = {hour: targetStartDate.getHours(), minute: targetStartDate.getMinutes(), second: null};
+
+          const targetEndDate: Date = new Date(checklist.calendarItem.endDate);
+          const targetEndDateStruct: NgbDateStruct = {day: targetEndDate.getDate(), month: targetEndDate.getMonth() + 1,
+            year: targetEndDate.getFullYear()};
+          this.targetEndTime = {hour: targetEndDate.getHours(), minute: targetEndDate.getMinutes(), second: null};
+
           this.creationDatestamp = checklist.creationDatestamp;
           this.checklistForm.patchValue({
             title: checklist.title,
-            targetDateManual: targetDateStruct
+            targetStartDateManual: targetStartDateStruct,
+            targetEndDateManual: targetEndDateStruct
           });
         }, error => {
           console.log(error);
         }
       );
+    } else {
+      this.targetStartTime = {hour: 0, minute: 0, second: null};
+      this.targetEndTime = {hour: 0, minute: 0, second: null};
     }
 
   }
@@ -95,7 +113,8 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
          const checklist: Checklist = new Checklist(this.creationDatestamp,
            this.checklistForm.controls['title'].value,
            { calendarId: null, title: null, description: null,
-             startDate: new Date(this.dateModelStartDate.year, this.dateModelStartDate.month - 1, this.dateModelStartDate.day),
+             startDate: new Date(this.dateModelStartDate.year, this.dateModelStartDate.month - 1, this.dateModelStartDate.day,
+               this.targetStartTime.hour, this.targetStartTime.minute),
              endDate: null
            }
          );
@@ -106,7 +125,8 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
           null,
           this.checklistForm.controls['title'].value,
           { calendarId: null, title: null, description: null,
-            startDate: new Date(this.dateModelStartDate.year, this.dateModelStartDate.month - 1, this.dateModelStartDate.day),
+            startDate: new Date(this.dateModelStartDate.year, this.dateModelStartDate.month - 1, this.dateModelStartDate.day,
+              this.targetStartTime.hour, this.targetStartTime.minute),
             endDate: null
           }
         );
