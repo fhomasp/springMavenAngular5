@@ -115,7 +115,8 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
            { calendarId: null, title: null, description: null,
              startDate: new Date(this.dateModelStartDate.year, this.dateModelStartDate.month - 1, this.dateModelStartDate.day,
                this.targetStartTime.hour, this.targetStartTime.minute),
-             endDate: null
+             endDate: new Date(this.dateModelEndDate.year, this.dateModelEndDate.month - 1, this.dateModelEndDate.day,
+               this.targetEndTime.hour, this.targetEndTime.minute)
            }
          );
          this.checklistService.updateCheckList(checklist).subscribe();
@@ -127,7 +128,8 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
           { calendarId: null, title: null, description: null,
             startDate: new Date(this.dateModelStartDate.year, this.dateModelStartDate.month - 1, this.dateModelStartDate.day,
               this.targetStartTime.hour, this.targetStartTime.minute),
-            endDate: null
+            endDate: new Date(this.dateModelEndDate.year, this.dateModelEndDate.month - 1, this.dateModelEndDate.day,
+              this.targetEndTime.hour, this.targetEndTime.minute)
           }
         );
         this.checklistService.saveChecklist(checklist).subscribe();
