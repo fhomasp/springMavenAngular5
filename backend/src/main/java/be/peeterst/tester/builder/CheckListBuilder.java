@@ -2,6 +2,7 @@ package be.peeterst.tester.builder;
 
 import be.peeterst.tester.model.CalendarItem;
 import be.peeterst.tester.model.CheckList;
+import be.peeterst.tester.model.ChecklistItem;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,6 +33,11 @@ public class CheckListBuilder {
 
     public CheckListBuilder withCalendarItem(CalendarItem calendarItem) {
         this.checkList.setCalendarItem(calendarItem);
+        return this;
+    }
+
+    public CheckListBuilder addChecklistItem(ChecklistItem checklistItem) {
+        this.checkList.getItems().add(checklistItem);
         return this;
     }
 }

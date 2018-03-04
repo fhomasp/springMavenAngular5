@@ -1,5 +1,6 @@
 package be.peeterst.tester.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +45,9 @@ public class CheckList {
     }
 
     public List<ChecklistItem> getItems() {
+        if(items == null) {
+            items = new ArrayList<>();
+        }
         return items;
     }
 

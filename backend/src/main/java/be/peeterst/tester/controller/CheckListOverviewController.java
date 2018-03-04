@@ -2,6 +2,7 @@ package be.peeterst.tester.controller;
 
 import be.peeterst.tester.builder.CalendarItemBuilder;
 import be.peeterst.tester.builder.CheckListBuilder;
+import be.peeterst.tester.builder.ChecklistItemBuilder;
 import be.peeterst.tester.model.CheckList;
 import org.springframework.web.bind.annotation.*;
 
@@ -96,6 +97,10 @@ public class CheckListOverviewController {
                         .withEndDate(Date.from(LocalDate.of(2017,1,5).atTime(9,37).toInstant(ZoneOffset.MAX)))
                         .withTitle("caltitle1")
                         .withDescription("caldescription1")
+                        .build())
+                .addChecklistItem(ChecklistItemBuilder.aChecklistItem()
+                        .withBulletName("bullet 1")
+                        .withCheck(true)
                         .build())
                 .build());
         waitATinyMoment();
