@@ -102,6 +102,10 @@ public class CheckListOverviewController {
                         .withBulletName("bullet 1")
                         .withCheck(true)
                         .build())
+                .addChecklistItem(ChecklistItemBuilder.aChecklistItem()
+                        .withBulletName("bullet 2")
+                        .withCheck(false)
+                        .build())
                 .build());
         waitATinyMoment();
         builtChecklists.add(CheckListBuilder.aCheckList()
@@ -112,6 +116,10 @@ public class CheckListOverviewController {
                         .withTitle("caltitle1")
                         .withDescription("caldescription1")
                         .build())
+                .addChecklistItem(ChecklistItemBuilder.aChecklistItem()
+                        .withBulletName("bullet 1")
+                        .withCheck(true)
+                        .build())
                 .build());
          waitATinyMoment();
         builtChecklists.add(CheckListBuilder.aCheckList()
@@ -121,6 +129,18 @@ public class CheckListOverviewController {
                         .withEndDate(Date.from(LocalDate.of(2017,4,1).atTime(9,37).toInstant(ZoneOffset.MAX)))
                         .withTitle("caltitle1")
                         .withDescription("caldescription1")
+                        .build())
+                .addChecklistItem(ChecklistItemBuilder.aChecklistItem()
+                        .withBulletName("bullet 1")
+                        .withCheck(true)
+                        .build())
+                .addChecklistItem(ChecklistItemBuilder.aChecklistItem()
+                        .withBulletName("bullet 2")
+                        .withCheck(false)
+                        .build())
+                .addChecklistItem(ChecklistItemBuilder.aChecklistItem()
+                        .withBulletName("bullet 3")
+                        .withCheck(false)
                         .build())
                 .build());
 

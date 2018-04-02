@@ -13,11 +13,14 @@ export class ChecklistOverviewComponent implements OnInit {
 
   checklists: Checklist[];
 
+  activeIds: string[] = [];
+
   constructor(private router: Router,
               private checklistService: ChecklistService) { }
 
   ngOnInit() {
     this.getAllChecklists();
+    this.activeIds = [];
   }
 
   getAllChecklists() {
