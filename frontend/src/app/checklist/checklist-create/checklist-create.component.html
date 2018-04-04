@@ -62,13 +62,46 @@
             <ngb-timepicker [(ngModel)]="targetEndTime" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
           </div>
 
-
         </div>
 
       </div>
-
     </div>
 
+    <div class="row">
+      <div class="col">
+
+        <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+          <ngb-panel>
+            <ng-template ngbPanelTitle>
+              <span *ngIf="checklist">Items ({{checklist.items.length}}):</span>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <ul *ngIf="checklist" class="list-unstyled">
+                <li *ngFor="let item of checklist.items; let itemIndex = index;">
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                      <input class="form-control" type="checkbox" [checked]="item.taken" [(ngModel)]="checklist.items[itemIndex].taken"
+                             [ngModelOptions]="{standalone: true}" style="width: 1.9rem; height: 1.7rem; cursor: pointer; margin-left: 10px; margin-top: 10px"/>
+                    </span>
+                    <input class="form-control" type="text" [(ngModel)]="checklist.items[itemIndex].bulletName"
+                           value={{item.bulletName}} [ngModelOptions]="{standalone: true}" style="margin-top:10px;"/>
+                    <span class="input-group-addon">
+                      <button type="button" class="btn btn-primary" (click)="deleteItem(item)" style="margin-top: 10px;">
+                        <img src="/assets/img/delete_24x24.svg" style="width: 1.2rem; height: 1.0rem; cursor: pointer;"/>
+                      </button>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+              <button type="button" class="btn btn-primary" (click)="addItem()">
+                <img src="/assets/img/plus_24x24.svg" style="width: 1.5rem; height: 1.2rem; cursor: pointer;"/>
+              </button>
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
+
+      </div>
+    </div>
 
     <br/>
     <br/>
@@ -87,6 +120,10 @@
       <tr>
         <td class="d-sm-table-cell"><pre>{{ dateModelEndDate | json }}</pre></td>
         <td class="d-sm-table-cell"><pre>Selected target time: {{targetEndTime | json}}</pre></td>
+      </tr>
+      <tr *ngFor="let item of (checklist ? checklist.items : [] )">
+        <td class="d-sm-table-cell"><pre>{{ item.bulletName | json }}</pre></td>
+        <td class="d-sm-table-cell"><pre>{{item.taken | json}}</pre></td>
       </tr>
     </table>
   </form>

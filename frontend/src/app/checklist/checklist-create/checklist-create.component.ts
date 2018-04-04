@@ -5,6 +5,7 @@ import { Checklist } from '../Checklist';
 import { ActivatedRoute, Router } from '@angular/router';
 import {NgbDateParserFormatter, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {isNumber, padNumber, toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
+import {ChecklistItem} from '../ChecklistItem';
 
 
 @Injectable()
@@ -90,6 +91,7 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
             targetStartDateManual: targetStartDateStruct,
             targetEndDateManual: targetEndDateStruct
           });
+          this.checklist = checklist;
         }, error => {
           console.log(error);
         }
@@ -97,6 +99,8 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
     } else {
       this.targetStartTime = {hour: 0, minute: 0, second: null};
       this.targetEndTime = {hour: 0, minute: 0, second: null};
+      this.checklist = new Checklist(null, null, null);
+      this.checklist.items = [];
     }
 
   }
@@ -119,6 +123,7 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
                this.targetEndTime.hour, this.targetEndTime.minute)
            }
          );
+         checklist.items = this.checklist.items;
          this.checklistService.updateCheckList(checklist).subscribe();
       }else {
         // this.creationDatestamp = Date.now();
@@ -132,11 +137,23 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
               this.targetEndTime.hour, this.targetEndTime.minute)
           }
         );
+        checklist.items = this.checklist.items;
         this.checklistService.saveChecklist(checklist).subscribe();
       }
 
       this.checklistForm.reset();
       this.router.navigate(['/checklist']);
+    }
+  }
+
+  addItem() {
+      this.checklist.items.push( { bulletName: '', taken: false, checklistId: null } );
+  }
+
+  deleteItem(item: ChecklistItem) {
+    const index: number = this.checklist.items.indexOf(item);
+    if (index > -1) {
+      this.checklist.items.splice(index, 1);
     }
   }
 

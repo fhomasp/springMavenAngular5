@@ -39,15 +39,12 @@
                     {{checklist.title}}
                   </ng-template>
                   <ng-template ngbPanelContent>
-                    <table class="table">
-                      <tbody>
-                      <tr *ngFor="let item of checklist.items; let itemIndex = index;">
-                        <td><input type="checkbox" [checked]="item.taken" disabled="disabled"/></td>
-                        <td>{{item.bulletName}}</td>
-                      </tr>
-                      </tbody>
-
-                    </table>
+                    <ul *ngIf="checklist" class="list-unstyled">
+                      <li *ngFor="let item of checklist.items">
+                        <input type="checkbox" [checked]="item.taken" disabled="disabled"/>
+                        <span>{{item.bulletName}}</span>
+                      </li>
+                    </ul>
                   </ng-template>
 
 

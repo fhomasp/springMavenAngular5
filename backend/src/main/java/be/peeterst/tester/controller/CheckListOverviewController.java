@@ -66,6 +66,8 @@ public class CheckListOverviewController {
         if(checkListToModify != null){
             checkListToModify.setTitle(checkList.getTitle());
             checkListToModify.getCalendarItem().setStartDate(checkList.getCalendarItem().getStartDate());
+            checkListToModify.getItems().clear();
+            checkListToModify.getItems().addAll(checkList.getItems());
             return checkListToModify;
         }
         return null;
