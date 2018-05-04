@@ -1,0 +1,9 @@
+{
+  "realm": "Demo",
+  "auth-server-url": "http://localhost:8090/auth",
+  "bearer-only": true,
+  "ssl-required": "none",
+  "resource": "Tester",
+  "enable-cors": true,
+  "public-client": true
+}
