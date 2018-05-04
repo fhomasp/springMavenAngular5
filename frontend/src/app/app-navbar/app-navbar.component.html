@@ -1,5 +1,5 @@
 <nav class='navbar navbar-expand-lg navbar-light bg-light'>
-  <a class="navbar-brand" href="#">{{ title }}</a>
+  <a class="navbar-brand" href="">{{ title }}</a>
   <button class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed = !isCollapsed"
           [attr.aria-expanded]="!isCollapsed">
@@ -15,5 +15,22 @@
         <a class="nav-link" routerLink="/checklist/create" routerLinkActive="active">new Checklist</a>
       </li>
     </ul>
+    <div class="navbar-nav mt-1 mt-md-0 dropdown">
+      <span (click)="getUserInfoFromToken()" id="navbarDropdown" class="nav-link btn btn-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+        {{fullName}}
+      </span>
+      <div *ngIf="isTokenCardVisible" class="dropdown-menu card" aria-labelledby="navbarDropdown" style="width: 10rem;">
+        <div class="card-body text-center">
+          <p class="card-title">Logged In User Information</p>
+          <p class="card-text">Username - {{username}}</p>
+          <p class="card-text">Full Name - {{fullName}}</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="navbar-nav mt-2 mt-md-0">
+      <button (click)="logout()" class="btn btn-outline-info my-2 my-sm-0" type="button">Logout</button>
+    </div>
   </div>
+
 </nav>

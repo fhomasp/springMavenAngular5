@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  keycloakRootUrl: 'http://localhost:8090/auth'
 };

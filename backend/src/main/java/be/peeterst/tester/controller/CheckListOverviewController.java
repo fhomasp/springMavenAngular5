@@ -47,7 +47,7 @@ public class CheckListOverviewController {
         return this.checkLists.stream().filter(checklist -> checklist.getCreationDatestamp().equals(creationDateStamp)).findFirst().orElse(null);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/write",method = RequestMethod.POST)
     public CheckList saveCheckList(@RequestBody CheckList checkList){
         //todo: only for saving, not updating: dao(service) should be responsible for this
         if(checkList.getCreationDatestamp() != null){
@@ -66,6 +66,7 @@ public class CheckListOverviewController {
         if(checkListToModify != null){
             checkListToModify.setTitle(checkList.getTitle());
             checkListToModify.getCalendarItem().setStartDate(checkList.getCalendarItem().getStartDate());
+            checkListToModify.getCalendarItem().setEndDate(checkList.getCalendarItem().getEndDate());
             checkListToModify.getItems().clear();
             checkListToModify.getItems().addAll(checkList.getItems());
             return checkListToModify;

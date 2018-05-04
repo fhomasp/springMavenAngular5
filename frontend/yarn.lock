@@ -3367,6 +3367,10 @@ karma@~1.7.0:
     tmp "0.0.31"
     useragent "^2.1.12"
 
+keycloak-js@^4.0.0-beta.1:
+  version "4.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-4.0.0-beta.1.tgz#7f8d2d63c53a512e7b98f6a47e10e32b1df3ac28"
+
 killable@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/killable/-/killable-1.0.0.tgz#da8b84bd47de5395878f95d64d02f2449fe05e6b"
