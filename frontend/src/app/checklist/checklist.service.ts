@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Checklist } from './Checklist';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Observable';
@@ -14,7 +14,6 @@ export class ChecklistService {
 
   private apiUrl = 'http://localhost:8080/overview';
 
-  // constructor(private http: Http) { }
 
   constructor(private keycloakHttp: KeycloakHttp ) { }
 
