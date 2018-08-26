@@ -69,7 +69,6 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
 
       ])
     });
-  // Validators.pattern('(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}')
 
     if (this.creationDatestamp) {
       this.checklistService.findByCreationDateStamp(this.creationDatestamp).subscribe(
@@ -124,7 +123,11 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
            }
          );
          checklist.items = this.checklist.items;
-         this.checklistService.updateCheckList(checklist).subscribe();
+         this.checklistService.updateCheckList(checklist).subscribe(
+           updatedChecklist => this.checklist = checklist,
+           observedErr => { throw observedErr; },
+           () => this.router.navigate(['/checklist'])
+         );
       }else {
         // this.creationDatestamp = Date.now();
         const checklist: Checklist = new Checklist(
@@ -138,11 +141,15 @@ export class ChecklistCreateComponent implements OnInit, OnDestroy {
           }
         );
         checklist.items = this.checklist.items;
-        this.checklistService.saveChecklist(checklist).subscribe();
+        this.checklistService.saveChecklist(checklist).subscribe(
+          savedChecklist => this.checklist = checklist,
+          observedErr => { throw observedErr; },
+          () => this.router.navigate(['/checklist'])
+        );
       }
 
       this.checklistForm.reset();
-      this.router.navigate(['/checklist']);
+      // this.router.navigate(['/checklist']);
     }
   }
 

@@ -34,6 +34,7 @@ public class CheckListOverviewController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<CheckList> getCheckLists() {
+        System.out.println("get all: "+this.checkLists);
         return checkLists;
     }
 
@@ -56,6 +57,7 @@ public class CheckListOverviewController {
         checkList.setCreationDatestamp(new Date().getTime());
 
         this.checkLists.add(checkList);
+        System.out.println("save one: "+checkList);
         return checkList;
     }
 
