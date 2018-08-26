@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/overview")
 public class CheckListOverviewController {
 
-    private List<CheckList> checkLists = new ArrayList<>();
+    private List<CheckList> checkLists;
 
     public CheckListOverviewController() {
         this.checkLists = buildChecklists();
@@ -59,7 +59,7 @@ public class CheckListOverviewController {
         return checkList;
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(value = "/write",method = RequestMethod.PUT)
     public CheckList updateCheckList(@RequestBody CheckList checkList){
         CheckList checkListToModify = this.checkLists.stream().filter(checkListFromList ->
                 checkListFromList.getCreationDatestamp().equals(checkList.getCreationDatestamp())).findFirst().orElse(null);
@@ -74,7 +74,7 @@ public class CheckListOverviewController {
         return null;
     }
 
-    @RequestMapping(value = "/{creationDatestamp}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/write/{creationDatestamp}",method = RequestMethod.DELETE)
     public int deleteCheckList(@PathVariable long creationDatestamp){
         CheckList found = this.checkLists.stream().filter(checkList -> checkList.getCreationDatestamp() == creationDatestamp)
                 .findFirst().orElse(null);

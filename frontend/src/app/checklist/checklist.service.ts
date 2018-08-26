@@ -41,13 +41,13 @@ export class ChecklistService {
   }
 
   updateCheckList(checklist: Checklist): Observable<Checklist> {
-    return this.keycloakHttp.put(this.apiUrl, checklist)
+    return this.keycloakHttp.put(this.apiUrl.concat('/write'), checklist)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'update checklist error'));
   }
 
   deleteCheckList(creationDatestamp: number): Observable<number> {
-      return this.keycloakHttp.delete(this.apiUrl + '/' + creationDatestamp)
+      return this.keycloakHttp.delete(this.apiUrl.concat('/write') + '/' + creationDatestamp)
         .map((res: Response) => res.json())
         .catch((error: any) => Observable.throw(error.json().error || 'delete checklist error'));
   }

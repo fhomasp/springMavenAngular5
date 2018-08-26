@@ -66,6 +66,7 @@ public class TesterApplication {
             adminConstraint.addAuthRole("ADMIN");
             SecurityCollection adminCollection = new SecurityCollection();
             adminCollection.addPattern("/overview/write");
+            adminCollection.addPattern("/overview/write/*");
             adminConstraint.addCollection(adminCollection);
             context.addConstraint(adminConstraint);
 
