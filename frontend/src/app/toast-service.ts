@@ -13,7 +13,7 @@ export class ToastService {
   showError(message: string) {
 
     this.toastManager.error(message, ToastService.DEFAULT_ERROR_TITLE,
-      { dismiss: 'controlled' , positionClass: 'toast-top-full-width' , showCloseButton: true })
+      { dismiss: 'controlled' , showCloseButton: true })
       .then(
         (toast: Toast) => {
       const currentToastId: number = toast.id;

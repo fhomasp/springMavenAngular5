@@ -4,6 +4,7 @@ import { ChecklistOverviewComponent} from './checklist-overview/checklist-overvi
 import { ChecklistCreateComponent} from './checklist-create/checklist-create.component';
 
 const routes: Routes = [
+  {path: '', redirectTo: '/checklist', pathMatch: 'full'},
   {path: 'checklist', component: ChecklistOverviewComponent},
   {path: 'checklist/create', component: ChecklistCreateComponent},
   {path: 'checklist/edit/:creationdatestamp', component: ChecklistCreateComponent}
