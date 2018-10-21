@@ -4,6 +4,8 @@ import be.peeterst.tester.builder.CalendarItemBuilder;
 import be.peeterst.tester.builder.CheckListBuilder;
 import be.peeterst.tester.builder.ChecklistItemBuilder;
 import be.peeterst.tester.model.CheckList;
+import be.peeterst.tester.repository.CheckListRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -28,60 +30,58 @@ public class CheckListOverviewController {
 
     private List<CheckList> checkLists;
 
-    public CheckListOverviewController() {
-        this.checkLists = buildChecklists();
+    private final CheckListRepository checkListRepository;
+
+    @Autowired
+    public CheckListOverviewController(CheckListRepository checkListRepository) {
+//        this.checkLists = buildChecklists();
+        this.checkListRepository = checkListRepository;
+        getCheckLists();
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<CheckList> getCheckLists() {
+        this.checkLists = new ArrayList<>();
+        checkListRepository.findAll().forEach(this.checkLists::add);
         System.out.println("get all: "+this.checkLists);
         return checkLists;
     }
 
     @RequestMapping(value = "/find/{title}",method = RequestMethod.GET)
     public List<CheckList> getCheckList(@PathVariable("title") String title){
-        return this.checkLists.stream().filter(checklist -> checklist.getTitle().contains(title)).collect(Collectors.toList());
+        return checkListRepository.findByTitle(title);
     }
 
     @RequestMapping(value = "/{creationDatestamp}",method = RequestMethod.GET)
     public CheckList getCheckList(@PathVariable("creationDatestamp") long creationDateStamp){
-        return this.checkLists.stream().filter(checklist -> checklist.getCreationDatestamp().equals(creationDateStamp)).findFirst().orElse(null);
+        return checkListRepository.findByCreationDatestamp(creationDateStamp);
     }
 
     @RequestMapping(value = "/write",method = RequestMethod.POST)
     public CheckList saveCheckList(@RequestBody CheckList checkList){
-        //todo: only for saving, not updating: dao(service) should be responsible for this
-        if(checkList.getCreationDatestamp() != null){
-            throw new IllegalStateException("creation date at checklist save should be null");
-        }
         checkList.setCreationDatestamp(new Date().getTime());
-
-        this.checkLists.add(checkList);
+        checkList.getItems().forEach(item -> item.setCheckList(checkList));
+        checkList.getCalendarItem().setCheckList(checkList);
         System.out.println("save one: "+checkList);
-        return checkList;
+        return this.checkListRepository.save(checkList);
     }
 
     @RequestMapping(value = "/write",method = RequestMethod.PUT)
     public CheckList updateCheckList(@RequestBody CheckList checkList){
-        CheckList checkListToModify = this.checkLists.stream().filter(checkListFromList ->
-                checkListFromList.getCreationDatestamp().equals(checkList.getCreationDatestamp())).findFirst().orElse(null);
-        if(checkListToModify != null){
-            checkListToModify.setTitle(checkList.getTitle());
-            checkListToModify.getCalendarItem().setStartDate(checkList.getCalendarItem().getStartDate());
-            checkListToModify.getCalendarItem().setEndDate(checkList.getCalendarItem().getEndDate());
-            checkListToModify.getItems().clear();
-            checkListToModify.getItems().addAll(checkList.getItems());
-            return checkListToModify;
-        }
-        return null;
+
+        checkList.getItems().forEach(item -> item.setCheckList(checkList));
+        checkList.getCalendarItem().setCheckList(checkList);
+        return this.checkListRepository.save(checkList);
     }
 
     @RequestMapping(value = "/write/{creationDatestamp}",method = RequestMethod.DELETE)
     public int deleteCheckList(@PathVariable long creationDatestamp){
+        getCheckLists();
         CheckList found = this.checkLists.stream().filter(checkList -> checkList.getCreationDatestamp() == creationDatestamp)
                 .findFirst().orElse(null);
         if(found == null) return 0;
             this.checkLists.remove(found);
+            this.checkListRepository.delete(found);
         return 1;
     }
 
@@ -93,8 +93,6 @@ public class CheckListOverviewController {
         List<CheckList> builtChecklists = new ArrayList<>();
         ZoneId zoneId = ZoneId.systemDefault();
         
-//        Date d = new Date();
-
         builtChecklists.add(CheckListBuilder.aCheckList()
                 .withTitle("Work")
                 .withCalendarItem(CalendarItemBuilder.aCalendarItem()

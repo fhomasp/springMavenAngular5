@@ -75,6 +75,7 @@ public class TesterApplication {
             userConstraint.addAuthRole("USER");
             SecurityCollection userCollection = new SecurityCollection();
             userCollection.addPattern("/overview");
+            userCollection.addPattern("/overview/*");
             userConstraint.addCollection(userCollection);
             context.addConstraint(userConstraint);
 

@@ -1,16 +1,33 @@
 package be.peeterst.tester.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Thomas
  * Date: 29/12/2017
  * Time: 16:15
  */
+
+@Entity
 public class ChecklistItem {
 
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    private int id;
+
+    @Column(name = "bullet_name")
     private String bulletName;
+
+    @Column
     private boolean taken;
-    private long checklistId;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CheckList_id")
+    @JsonBackReference
+    private CheckList checkList;
 
     public String getBulletName() {
         return bulletName;
@@ -28,11 +45,25 @@ public class ChecklistItem {
         this.taken = taken;
     }
 
-    public long getChecklistId() {
-        return checklistId;
+    public CheckList getCheckList() {
+        return checkList;
     }
 
-    public void setChecklistId(long checklistId) {
-        this.checklistId = checklistId;
+    public void setCheckList(CheckList checkList) {
+        this.checkList = checkList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ChecklistItem that = (ChecklistItem) o;
+        return this.id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return 66 * id;
     }
 }

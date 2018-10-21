@@ -37,7 +37,12 @@ public class CheckListBuilder {
     }
 
     public CheckListBuilder addChecklistItem(ChecklistItem checklistItem) {
-        this.checkList.getItems().add(checklistItem);
+        this.checkList.addItem(checklistItem);
+        return this;
+    }
+
+    public CheckListBuilder withCreationDateStamp(long creationDateStamp) {
+        this.checkList.setCreationDatestamp(creationDateStamp);
         return this;
     }
 }
