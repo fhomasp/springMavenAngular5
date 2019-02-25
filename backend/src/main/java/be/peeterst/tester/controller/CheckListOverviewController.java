@@ -77,11 +77,13 @@ public class CheckListOverviewController {
     @RequestMapping(value = "/write/{creationDatestamp}",method = RequestMethod.DELETE)
     public int deleteCheckList(@PathVariable long creationDatestamp){
         getCheckLists();
-        CheckList found = this.checkLists.stream().filter(checkList -> checkList.getCreationDatestamp() == creationDatestamp)
-                .findFirst().orElse(null);
+        CheckList found = this.checkLists.stream()
+                .filter(checkList -> checkList.getCreationDatestamp() == creationDatestamp)
+                .findFirst()
+                .orElse(null);
         if(found == null) return 0;
-            this.checkLists.remove(found);
-            this.checkListRepository.delete(found);
+        this.checkLists.remove(found);
+        this.checkListRepository.delete(found);
         return 1;
     }
 
